@@ -1,0 +1,53 @@
+package SISTEMA;
+
+public class hd_Mem{
+    
+    private Integer[] memory_HD; // Definição do array da memória do HD
+    private static int storage = 2352626;
+
+    public hd_Mem() {   // Construtor para memória do HD
+        this.memory_HD = new Integer[storage];
+    }
+
+    
+    
+    
+    public Integer getMemory_HD(int index) {    // Retornar o valor do index especificado
+        return this.memory_HD[index];
+    }
+    public void setMemory_HD(int index, int value) {    // Setar um valor para um index especifico
+        memory_HD[index] = value;
+    }
+
+
+    
+    public Integer getIndexFree(){  //Retornar se há algum espaço de memoria do HD vazio
+        
+        for(int i=0; i<=storage; i++){
+            
+           if(memory_HD[i] == null){
+               System.out.println("Tem espaço no Index [" + i + "] do HD");
+               return i;
+           }
+           
+        }
+        System.out.println("Não tem espaço no HD");
+        return null;
+    }
+
+    public void PrintHD(){  //Printar toda a memoria do HD
+                
+        for(int i=0; i<=memory_HD.length; i++){
+            
+            if(memory_HD[i] != null){    //Todos os index e valores não nulos
+                
+                System.out.println("Index [" + i + "] de valor =" + memory_HD[i]);
+
+            }else{  //Todos os index nulos
+
+                System.out.println("Index [" + i + "] está vazio");
+            }
+            
+        }
+    }
+}
