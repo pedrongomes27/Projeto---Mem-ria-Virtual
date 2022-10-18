@@ -1,4 +1,4 @@
-package MMU;
+package MANAGER_MEMORY;
 
 import SISTEMA.HD_Mem;
 import SISTEMA.Pagenation;

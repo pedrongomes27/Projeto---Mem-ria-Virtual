@@ -1,4 +1,4 @@
-package MMU;
+package MANAGER_MEMORY;
 
 import java.util.ArrayList;
 

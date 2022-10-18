@@ -1,4 +1,4 @@
-package MMU;
+package MANAGER_MEMORY;
 
 import SISTEMA.hd_Mem;
 import SISTEMA.Ram_Mem;

@@ -53,7 +53,7 @@ public class Pagenation{
     }
 
 
-    public Boolean exist(){
+    public Boolean existPage(){
         
         if(Virtual_Page==null){
             return false;
