@@ -1,18 +1,14 @@
 package SISTEMA;
 
-import SISTEMA.hd_Mem;
-import SISTEMA.ram_Mem;
-import SISTEMA.virtual_Mem;
-
-public class mem_Page{
+public class Pagenation{
 
     private Boolean referenced; //REFERENCIADO
     private Integer reference;
-    private Boolean modified;   //MODIFiuCADO
+    private Boolean modified;   //MODIFICADO
     private Boolean present;    //PRESENTE/AUSENTE
     private Integer Virtual_Page;   //MOLDURA DA PAGINA VIRTUAL
 
-    public mem_Page(){
+    public Pagenation(){
         this.referenced=false;
         this.reference=0;
         this.modified=false;

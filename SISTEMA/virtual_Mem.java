@@ -1,23 +1,23 @@
 package SISTEMA;
 
-public class virtual_Mem {
-    private mem_Page[] memory_Virtual;
-    private hd_Mem HD;
-    private ram_Mem Ram;
+public class Virtual_Mem {
+    private Pagenation[] memory_Virtual;
+    private HD_Mem HD;
+    private Ram_Mem Ram;
     private int storage = -1;
 
-    public virtual_Mem(int storage) {
+    public Virtual_Mem(int storage) {
 
         this.storage = storage;
 
         for(int i=0; i<=storage; i++){
                
-            memory_Virtual = new mem_Page[storage];
+            memory_Virtual = new Pagenation[storage];
       
        }
     }
 
-    public mem_Page getMemory_Virtual(int index) {
+    public Pagenation getMemory_Virtual(int index) {
         return memory_Virtual[index];
     }
 

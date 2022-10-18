@@ -1,11 +1,11 @@
 package SISTEMA;
 
-public class ram_Mem {
+public class Ram_Mem {
 
     private Integer[] memory_RAM;
     private int storage = -1;
 
-    public ram_Mem(int storage){
+    public Ram_Mem(int storage){
         this.storage = storage;
         this.memory_RAM = new Integer[storage];
     }

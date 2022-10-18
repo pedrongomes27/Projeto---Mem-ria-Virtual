@@ -1,11 +1,11 @@
 package SISTEMA;
 
-public class hd_Mem{
+public class HD_Mem{
     
     private Integer[] memory_HD; // Definição do array da memória do HD
     private static int storage = 2352626;
 
-    public hd_Mem() {   // Construtor para memória do HD
+    public HD_Mem() {   // Construtor para memória do HD
         this.memory_HD = new Integer[storage];
     }
 

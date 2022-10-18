@@ -1,12 +1,12 @@
 package MMU;
 
 import SISTEMA.hd_Mem;
-import SISTEMA.ram_Mem;
-import SISTEMA.virtual_Mem;
+import SISTEMA.Ram_Mem;
+import SISTEMA.Virtual_Mem;
 
 public class MMU {
 
-    public MMU(ram_Mem ram, virtual_Mem mVirtual, hd_Mem hD) {
+    public MMU(Ram_Mem ram, Virtual_Mem mVirtual, hd_Mem hD) {
     }
 
 }

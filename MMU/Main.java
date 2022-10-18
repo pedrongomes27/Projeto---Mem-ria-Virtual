@@ -2,7 +2,9 @@ package MMU;
 
 import java.util.ArrayList;
 
-import SISTEMA.*;
+import SISTEMA.HD_Mem;
+import SISTEMA.Ram_Mem;
+import SISTEMA.Virtual_Mem;
 
 public class Main {
     
@@ -10,16 +12,14 @@ public class Main {
         int storage_Virtual = 8;
         int threads = 3;  
         
-        ram_Mem Ram =new ram_Mem(storage_Virtual/2);
-        virtual_Mem mVirtual=new virtual_Mem(storage_Virtual);
-        hd_Mem HD=new hd_Mem();
+        Ram_Mem Ram = new Ram_Mem(storage_Virtual/2);
+        Virtual_Mem Virtual = new Virtual_Mem(storage_Virtual);
+        HD_Mem HD=new HD_Mem();
         
         try {
-            
             for(int i=1; i <= threads; i++){
              
             ArrayList<String> IN = new ArrayList<String>();
-
                      
         }
             
