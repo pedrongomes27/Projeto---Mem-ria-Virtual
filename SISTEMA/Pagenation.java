@@ -7,6 +7,7 @@ public class Pagenation{
     private Boolean modified;   //MODIFICADO
     private Boolean present;    //PRESENTE/AUSENTE
     private Integer Virtual_Page;   //MOLDURA DA PAGINA VIRTUAL
+    private Integer value;    //VALOR
 
     public Pagenation(){
         this.referenced=false;
@@ -59,6 +60,14 @@ public class Pagenation{
             return false;
         }
         return true;
+    }
+
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
     }
     
     public void print(){

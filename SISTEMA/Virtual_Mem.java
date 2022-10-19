@@ -1,15 +1,15 @@
 package SISTEMA;
 
-public class Virtual_Mem {
+public class Virtual_Mem implements virtual_Interface{
     private Pagenation[] memory_Virtual;
     private HD_Mem HD;
     private Ram_Mem Ram;
     private int storage = -1;
 
-    public Virtual_Mem(int storage) {
 
-        this.storage = storage;
 
+
+    public void Virtual_Mem(int storage) {
         for(int i=0; i<=storage; i++){
                
             memory_Virtual = new Pagenation[storage];
@@ -34,5 +34,15 @@ public class Virtual_Mem {
             
         }
             
+    }
+
+    @Override
+    public int getIndexValue() {
+        return 0;
+    }
+
+    @Override
+    public void updateValue(int index, int a, int b) {
+        memory_Virtual[index].setValue(a+b);
     }
 }
