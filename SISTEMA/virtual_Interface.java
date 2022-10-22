@@ -11,4 +11,6 @@ public interface virtual_Interface {
     void PrintVirtual();
 
     Pagenation getMemory_Virtual(int index);
+
+
 }

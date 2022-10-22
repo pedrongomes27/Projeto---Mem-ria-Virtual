@@ -9,7 +9,7 @@ public class Pagenation{
     private Integer Virtual_Page;   //MOLDURA DA PAGINA VIRTUAL
     private Integer value;    //VALOR
 
-    public Pagenation(){
+    public Pagenation(Integer Virtual_Page){
         this.referenced=false;
         this.reference=0;
         this.modified=false;

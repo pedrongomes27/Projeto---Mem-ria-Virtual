@@ -1,5 +1,7 @@
 package SISTEMA;
 
+import java.util.HashMap;
+
 public class Virtual_Mem implements virtual_Interface{
     private Pagenation[] memory_Virtual;
     private HD_Mem HD;
@@ -11,9 +13,14 @@ public class Virtual_Mem implements virtual_Interface{
 
     public void Virtual_Mem(int storage) {
         for(int i=0; i<=storage; i++){
-               
-            memory_Virtual = new Pagenation[storage];
-      
+
+            memory_Virtual = new Pagenation[i];
+
+            HashMap<Integer, Pagenation> memoria = new HashMap<>();
+
+            memoria.put(i, new Pagenation( i));
+
+            System.out.println(memoria);
        }
     }
 
