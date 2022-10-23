@@ -5,10 +5,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 
-import SISTEMA.*;
-
-
-
 public class Main {
     
     public static void main(String[] args) {
@@ -19,16 +15,16 @@ public class Main {
 //        Virtual_Mem Virtual = new Virtual_Mem();
 //        HD_Mem HD=new HD_Mem();
 //        Virtual.getMemory_Virtual(storage_Virtual);
-        try {
-            for(int i=1; i <= threads; i++){
-             
-            ArrayList<String> IN = new ArrayList<String>();
-                     
-        }
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            for(int i=1; i <= threads; i++){
+//
+//            ArrayList<String> IN = new ArrayList<String>();
+//
+//        }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         //int threads = 3;
         HashMap<Integer, String> memoriaVirtual = new HashMap<>();
 
@@ -58,7 +54,7 @@ public class Main {
         //Memoria Virtual Minima = 10
         //Memoria Virtual Maxima = 40
         int tamanhoDaMinhaMemoriaVirtual = 10;
-        String SUA_ENTRADA = new Process(tamanhoDaMinhaMemoriaVirtual).getNewEntrada();
+        String SUA_ENTRADA = new EntryFactory(tamanhoDaMinhaMemoriaVirtual).getNewEntrada();
         System.out.println(SUA_ENTRADA);
         String[] strSplit = SUA_ENTRADA.split("[-,]");
         System.out.println(SUA_ENTRADA);

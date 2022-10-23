@@ -13,7 +13,7 @@ public class Buffer {
     //Definindo tamanho da memória virtual(A física é definida matematicamente pela divisão da virtual por 2)
     int tamanhoDaMinhaMemoriaVirtual = 10;
     //Chamada da fabrica de entradas
-    String SUA_ENTRADA = new Process(tamanhoDaMinhaMemoriaVirtual).getNewEntrada();
+    String SUA_ENTRADA = new EntryFactory(tamanhoDaMinhaMemoriaVirtual).getNewEntrada();
     //Dando split para tirar o hífen e a vírgula
     String[] strSplit = SUA_ENTRADA.split("[-,]");
     //Transformando em arraylist
@@ -21,6 +21,8 @@ public class Buffer {
             Arrays.asList(strSplit));
     String endereco = "";
     String escrita = "";
+
+    Pagenation novo = new Pagenation(1);
 
 
     //Método para iniciar a memória virtual
@@ -52,13 +54,32 @@ public class Buffer {
             if (strList.get(i).contains("R")) {
                 endereco = strList.get(i - 1);
                 System.out.println("LENDO O ENDERECO " + endereco);
+                Pagenation p = new Pagenation(i);
+                p.setVirtual_Page(Integer.valueOf(endereco));
+                p.setReferenced(true);
+//                Pagenation p = (Pagenation) memoriaVirtual.get(i);
+//                p.setVirtual_Page(Integer.valueOf(endereco));
+//                p.setReferenced(true);
+//                if (String.valueOf(p.getPresent()) == "false") {
+//                    System.out.println("Página vazia");
+//                }
+//                else {
+//                    System.out.println(memoriaVirtual.get(Integer.parseInt(endereco)));
+//                }
                 System.out.println(memoriaVirtual.get(Integer.parseInt(endereco)));
             }
             if (strList.get(i).contains("W")) {
                 endereco = strList.get(i - 1);
                 escrita = strList.get(i + 1);
                 System.out.println("ESCREVENDO " + escrita + " NO ENDERECO " + endereco);
-                memoriaVirtual.put(Integer.parseInt(endereco), escrita);
+                Pagenation p = new Pagenation(i);
+                p.setValue(Integer.valueOf(escrita));
+                p.setVirtual_Page(Integer.valueOf(endereco));
+                p.setReferenced(true);
+                p.setModified(true);
+                p.setPresent(true);
+
+                memoriaVirtual.put(Integer.parseInt(endereco), p);
             }
         }
         System.out.println(memoriaVirtual);

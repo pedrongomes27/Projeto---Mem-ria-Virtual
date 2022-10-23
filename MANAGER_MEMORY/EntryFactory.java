@@ -4,12 +4,12 @@ package MANAGER_MEMORY;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Process{
+public class EntryFactory {
     public static final int QTD_ACESSO_ENTRADA = 100;
     private int tamanhoMemoriaVirtual = 0;
     private int seed;
 
-    public Process(int tamanhoMemoria) {
+    public EntryFactory(int tamanhoMemoria) {
         this.tamanhoMemoriaVirtual = tamanhoMemoria;
         Random r = new Random();
         this.seed = r.nextInt(tamanhoMemoria);

@@ -20,6 +20,18 @@ public class Pagenation{
     }
 
 
+    @Override
+    public String toString() {
+        return "Página{" +
+                "Referenced='" + referenced + '\'' +
+                ", reference='" + reference + '\'' +
+                ", modified='" + modified + '\'' +
+                ", present='" + present + '\'' +
+                ", virtual_page='" + Virtual_Page + '\'' +
+                ", value='" + value + '\'' +
+                '}';
+    }
+
     public Boolean getReferenced() {
         return referenced;
     }
@@ -77,5 +89,9 @@ public class Pagenation{
                          + "Modificada: "+ modified + "\n"
                          + "Presente: "+ present + "\n"
                          + "Página Virtual: "+ Virtual_Page);
+    }
+
+    public Object getValue(String escrita) {
+        return value;
     }
 }
