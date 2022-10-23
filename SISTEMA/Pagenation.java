@@ -1,5 +1,7 @@
 package SISTEMA;
 
+import java.lang.constant.Constable;
+
 public class Pagenation{
 
     private Boolean referenced; //REFERENCIADO
@@ -15,7 +17,6 @@ public class Pagenation{
         this.modified=false;
         this.present=false;
         this.Virtual_Page=null;
-
     }
 
 
