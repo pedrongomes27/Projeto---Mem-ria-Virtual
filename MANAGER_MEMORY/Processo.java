@@ -18,9 +18,9 @@ public class Processo extends Thread{
         try{
             synchronized(this) {
                 HashMap virtual = buffer.iniciarMemoriaVirtual();
-                System.out.println(memoria);
+                System.out.println(virtual);
 
-                buffer.teste(virtual);
+                buffer.teste(memoria);
                 System.out.println("Process");
             }
         }catch(Exception e){
