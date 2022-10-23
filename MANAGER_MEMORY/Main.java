@@ -1,12 +1,9 @@
 package MANAGER_MEMORY;
 
 import java.util.ArrayList;
-<<<<<<< Updated upstream
-=======
 import java.util.Arrays;
 import java.util.HashMap;
 
->>>>>>> Stashed changes
 
 import SISTEMA.*;
 
@@ -16,13 +13,12 @@ public class Main {
     
     public static void main(String[] args) {
         int storage_Virtual = 10;
-<<<<<<< Updated upstream
         int threads = 3;  
         
-        Ram_Mem Ram = new Ram_Mem(storage_Virtual/2);
-        Virtual_Mem Virtual = new Virtual_Mem();
-        HD_Mem HD=new HD_Mem();
-        Virtual.getMemory_Virtual(storage_Virtual);
+//        Ram_Mem Ram = new Ram_Mem(storage_Virtual/2);
+//        Virtual_Mem Virtual = new Virtual_Mem();
+//        HD_Mem HD=new HD_Mem();
+//        Virtual.getMemory_Virtual(storage_Virtual);
         try {
             for(int i=1; i <= threads; i++){
              
@@ -33,7 +29,6 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
-=======
         //int threads = 3;
         HashMap<Integer, String> memoriaVirtual = new HashMap<>();
 
@@ -51,22 +46,20 @@ public class Main {
 
 
         //Ram_Mem Ram = new Ram_Mem(storage_Virtual/2);
-        Virtual_Mem Virtual = new Virtual_Mem();
-        //HD_Mem HD=new HD_Mem();
-        Virtual.Virtual_Mem(storage_Virtual);
+//        Virtual_Mem Virtual = new Virtual_Mem();
+//        //HD_Mem HD=new HD_Mem();
+//        Virtual.Virtual_Mem(storage_Virtual);
 //        Array HD_Dados_Programa = {0-5, 1-5, 2-4, 3-0, 4-10, 5-2, 6-8, 7-3};
 //        Array MemVirtual = {null,null,null,null, null,null,null,null};
 //        Array MemFisica = {null,null,null,null};
->>>>>>> Stashed changes
+
 
         //EXEMPLO QUE COMO USAR A FABRICA DE ENTRADAS
         //Memoria Virtual Minima = 10
         //Memoria Virtual Maxima = 40
         int tamanhoDaMinhaMemoriaVirtual = 10;
         String SUA_ENTRADA = new Process(tamanhoDaMinhaMemoriaVirtual).getNewEntrada();
-<<<<<<< Updated upstream
         System.out.println(SUA_ENTRADA);
-=======
         String[] strSplit = SUA_ENTRADA.split("[-,]");
         System.out.println(SUA_ENTRADA);
         ArrayList<String> strList = new ArrayList<String>(
@@ -88,15 +81,16 @@ public class Main {
             }
 
         }
+
         System.out.println(memoriaVirtual);
 
 
         Buffer b = new Buffer();
-        Processo a =  new Processo(b);
-        Processo c =  new Processo(b);
+        HashMap memoria = b.iniciarMemoriaVirtual();
+        Processo a =  new Processo(b, memoria);
+        Processo c =  new Processo(b, memoria);
         a.start();
         c.start();
->>>>>>> Stashed changes
     }
 
     private static boolean isNumeric(String strNum) {

@@ -14,17 +14,14 @@ public class Buffer {
     String endereco = "";
     String escrita = "";
 
-
     public HashMap iniciarMemoriaVirtual() {
         HashMap<Integer, String> memoriaVirtual = new HashMap<>();
         int storage_Virtual = 10;
         for (int i = 0; i < storage_Virtual; i++) {
             memoriaVirtual.put(i, null);
             }
-
         return memoriaVirtual;
     }
-
     public HashMap iniciarMemoriaFisica() {
         HashMap<Integer, String> memoriaFisica = new HashMap<>();
         while (inicio == 0) {

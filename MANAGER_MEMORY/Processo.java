@@ -6,16 +6,19 @@ import java.util.HashMap;
 
 public class Processo extends Thread{
     Buffer buffer;
-    public Processo(Buffer b) {
+    HashMap memoria;
+    public Processo(Buffer b, HashMap memoria) {
         this.buffer = b;
+        this.memoria = memoria;
     }
+
 
     public void run(){
 
         try{
             synchronized(this) {
                 HashMap virtual = buffer.iniciarMemoriaVirtual();
-                System.out.println(virtual);
+                System.out.println(memoria);
 
                 buffer.teste(virtual);
                 System.out.println("Process");
