@@ -5,6 +5,11 @@ import SISTEMA.Pagenation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
+
+import static java.lang.Thread.sleep;
 
 public class Buffer {
     //Instanciando a classe de página virtual para uso futuro no hashmap
@@ -24,19 +29,27 @@ public class Buffer {
 
     Pagenation novo = new Pagenation(1);
 
+    ReentrantLock lock = new ReentrantLock();
+    int counter = 0;
+
+
+
 
     //Método para iniciar a memória virtual
-    public HashMap iniciarMemoriaVirtual() {
-        HashMap<Integer, Pagenation> memoriaVirtual = new HashMap<>();
+    public Pagenation[] iniciarMemoriaVirtual() {
         int storage_Virtual = 10;
+        Pagenation[] memoriaVirtual = new Pagenation[storage_Virtual];
         for (int i = 0; i < storage_Virtual; i++) {
-            memoriaVirtual.put(i, new Pagenation(i));
-            }
+            memoriaVirtual[i] = new Pagenation(i);
+        }
+        System.out.println(Arrays.toString(memoriaVirtual));
         return memoriaVirtual;
     }
+
+
     //Método para iniciar a memória física
-    public HashMap iniciarMemoriaFisica() {
-        HashMap<Integer, Pagenation> memoriaFisica = new HashMap<>();
+    public Map iniciarMemoriaFisica() {
+        Map<Integer, Pagenation> memoriaFisica = new HashMap<>();
         while (inicio == 0) {
             int storage_Virtual = 10;
             for (int i = 0; i < storage_Virtual / 2; i++) {
@@ -48,38 +61,111 @@ public class Buffer {
         return memoriaFisica;
     }
 
-    //Método para manipular a memória virtual escrevendo e lendo os valores em suas respectivas chaves
-    public void teste(HashMap memoriaVirtual){
+    public void ignorar(HashMap memoria, int i){
+//        if((HashMap.get(i).getReferenced() == true){
+//
+//        }
+    }
+
+    public void perform() {
+        lock.lock();
+        try {
+            // Critical section here
+            counter++;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public void performTryLock(int i) throws InterruptedException {
+        //...
+        boolean isLockAcquired = lock.tryLock(1, TimeUnit.SECONDS);
+
+        if(isLockAcquired) {
+            try {
+                //Critical section here
+            } finally {
+                lock.unlock();
+            }
+        }
+        //...
+    }
+
+
+
+
+    public synchronized void leitura(Pagenation[] memoriaVirtual, int i) throws InterruptedException {
+        sleep((long)(Math.random() * 100));
+        endereco = strList.get(i - 1);
+        Pagenation p = memoriaVirtual[Integer.valueOf(endereco)];
+        //Se o atributo "Blocked" for verdadeiro, pular para a próxima leitura
+        if (memoriaVirtual[Integer.valueOf(endereco)].getBlocked()) {
+            return;
+        }
+        //Se a página não existir, dizer que não existe e pular
+        else if (!memoriaVirtual[Integer.valueOf(endereco)].getPresent()) {
+            memoriaVirtual[Integer.valueOf(endereco)].setBlocked(true);
+            System.out.println(Thread.currentThread().getName()+" LENDO O ENDERECO " + endereco);
+            System.out.println("Página vazia");
+            sleep((long)(Math.random() * 100));
+        //Se existir e não estiver bloqueada, ler normalmente
+        } else {
+            System.out.println(Thread.currentThread().getName()+" LENDO O ENDERECO " + endereco);
+            sleep((long)(Math.random() * 100));
+        }
+        sleep(100);
+    }
+
+    public synchronized void escrita(Pagenation[] memoriaVirtual, int i) throws InterruptedException {
+        sleep((long)(Math.random() * 100));
+        endereco = strList.get(i - 1);
+        escrita = strList.get(i + 1);
+
+        System.out.println(Thread.currentThread().getName()+" ESCREVENDO " + escrita + " NO ENDERECO " + endereco);
+        Pagenation p = memoriaVirtual[Integer.valueOf(endereco)];
+        //Se o atributo "Blocked" for verdadeiro, pular para a próxima leitura
+        if (memoriaVirtual[Integer.valueOf(endereco)].getBlocked()) {
+            return;
+        }
+        //Se a página não existir, criar uma
+        else if (!memoriaVirtual[Integer.valueOf(endereco)].getPresent()) {
+            memoriaVirtual[Integer.valueOf(endereco)].setBlocked(true);
+            p.setValue(Integer.valueOf(escrita));
+            p.setVirtual_Page(Integer.valueOf(endereco));
+            p.setReferenced(true);
+            p.setModified(true);
+            p.setPresent(true);
+            memoriaVirtual[Integer.valueOf(endereco)] = p;
+            System.out.println("Página criada");
+            sleep((long)(Math.random() * 100));
+
+        }
+        //Se existir e não estiver bloqueada, escrever normalmente
+        else {
+            memoriaVirtual[Integer.valueOf(endereco)].setBlocked(true);
+            p.setValue(Integer.valueOf(escrita));
+            p.setVirtual_Page(Integer.valueOf(endereco));
+            p.setReferenced(true);
+            p.setModified(true);
+            p.setPresent(true);
+            memoriaVirtual[Integer.valueOf(endereco)] = p;
+            System.out.println("Página atualizada");
+            sleep((long)(Math.random() * 100));
+        }
+        sleep(10);
+    }
+
+    //Método para manipular a memória virtual escrevendo e lendo os valores em suas respectivas páginas
+    public void teste(Pagenation[] memoriaVirtual) throws InterruptedException {
+        System.out.println(SUA_ENTRADA);
         for (int i = 0; i<strList.size(); i++) {
             if (strList.get(i).contains("R")) {
-                endereco = strList.get(i - 1);
-                System.out.println("LENDO O ENDERECO " + endereco);
-                Pagenation p = new Pagenation(i);
-                p.setVirtual_Page(Integer.valueOf(endereco));
-                p.setReferenced(true);
-//                Pagenation p = (Pagenation) memoriaVirtual.get(i);
-//                p.setVirtual_Page(Integer.valueOf(endereco));
-//                p.setReferenced(true);
-//                if (String.valueOf(p.getPresent()) == "false") {
-//                    System.out.println("Página vazia");
-//                }
-//                else {
-//                    System.out.println(memoriaVirtual.get(Integer.parseInt(endereco)));
-//                }
-                System.out.println(memoriaVirtual.get(Integer.parseInt(endereco)));
-            }
-            if (strList.get(i).contains("W")) {
-                endereco = strList.get(i - 1);
-                escrita = strList.get(i + 1);
-                System.out.println("ESCREVENDO " + escrita + " NO ENDERECO " + endereco);
-                Pagenation p = new Pagenation(i);
-                p.setValue(Integer.valueOf(escrita));
-                p.setVirtual_Page(Integer.valueOf(endereco));
-                p.setReferenced(true);
-                p.setModified(true);
-                p.setPresent(true);
+                leitura(memoriaVirtual, i);
 
-                memoriaVirtual.put(Integer.parseInt(endereco), p);
+
+            }
+            else if (strList.get(i).contains("W")) {
+                escrita(memoriaVirtual, i);
             }
         }
         System.out.println(memoriaVirtual);

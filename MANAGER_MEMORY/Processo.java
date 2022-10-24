@@ -1,15 +1,22 @@
 package MANAGER_MEMORY;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import SISTEMA.Pagenation;
+
+import java.util.Map;
+import java.util.concurrent.CyclicBarrier;
 
 public class Processo extends Thread{
     Buffer buffer;
-    HashMap memoria;
-    public Processo(Buffer b, HashMap memoria) {
+    Pagenation[] memoria;
+    CyclicBarrier barrier;
+    private int threadsUpdatedSomething;
+
+
+
+    public Processo(Buffer b, Pagenation[] memoria, CyclicBarrier barrier) {
         this.buffer = b;
         this.memoria = memoria;
+        this.barrier = barrier;
     }
 
 
@@ -17,43 +24,25 @@ public class Processo extends Thread{
 
         try{
             synchronized(this) {
-                HashMap virtual = buffer.iniciarMemoriaVirtual();
+                Pagenation[] virtual = buffer.iniciarMemoriaVirtual();
                 System.out.println(virtual);
-
+                barrier.await();
                 buffer.teste(memoria);
-                System.out.println("Process");
+                System.out.println("Fim da thread" + Thread.currentThread().getName() + ": ");
+                for(int i = 0; i < memoria.length; i++){
+                    System.out.println(memoria[i]);
+                }
             }
         }catch(Exception e){
         }
     }
 
-//    public void leitura(ArrayList strList){
-//        int tamanhoDaMinhaMemoriaVirtual = 10;
-//        String SUA_ENTRADA = new Process(tamanhoDaMinhaMemoriaVirtual).getNewEntrada();
-//        String[] strSplit = SUA_ENTRADA.split("[-,]");
-//        System.out.println(SUA_ENTRADA);
-//        ArrayList<String> strList = new ArrayList<String>(
-//                Arrays.asList(strSplit));
-//        System.out.println(strList);
-//        String endereco = "";
-//        String escrita = "";
-//        for (int i = 0; i<strList.size(); i++) {
-//            if (strList.get(i).contains("R")) {
-//                endereco = strList.get(i - 1);
-//                System.out.println("LENDO O ENDERECO " + endereco);
-//                System.out.println(memoriaVirtual.get(Integer.parseInt(endereco)));
-//            }
-//            if (strList.get(i).contains("W")) {
-//                endereco = strList.get(i - 1);
-//                escrita = strList.get(i + 1);
-//                System.out.println("ESCREVENDO " + escrita + " NO ENDERECO " + endereco);
-//                memoriaVirtual.put(Integer.parseInt(endereco), escrita);
-//            }
-//
-//        }
-//        System.out.println(memoriaVirtual);
-//    }
-
-
+    public void await(CyclicBarrier Barrier) {
+        try {
+            System.out.println("A turma " + barrier + " está esperando");
+            Barrier.await();
+        } catch (Exception e) {
+        }
+    }
 
 }

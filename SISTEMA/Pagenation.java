@@ -2,7 +2,7 @@ package SISTEMA;
 
 import java.lang.constant.Constable;
 
-public class Pagenation{
+public class Pagenation {
 
     private Boolean referenced; //REFERENCIADO
     private Integer reference;
@@ -11,12 +11,15 @@ public class Pagenation{
     private Integer Virtual_Page;   //MOLDURA DA PAGINA VIRTUAL
     private Integer value;    //VALOR
 
-    public Pagenation(Integer Virtual_Page){
-        this.referenced=false;
-        this.reference=0;
-        this.modified=false;
-        this.present=false;
-        this.Virtual_Page=null;
+    private Boolean blocked;
+
+    public Pagenation(Integer Virtual_Page) {
+        this.referenced = false;
+        this.reference = 0;
+        this.modified = false;
+        this.present = false;
+        this.Virtual_Page = null;
+        this.blocked = false;
     }
 
 
@@ -29,47 +32,48 @@ public class Pagenation{
                 ", present='" + present + '\'' +
                 ", virtual_page='" + Virtual_Page + '\'' +
                 ", value='" + value + '\'' +
+                ", blocked='" + blocked + '\'' +
                 '}';
     }
 
     public Boolean getReferenced() {
         return referenced;
     }
+
     public void setReferenced(Boolean referenced) {
-        if(referenced==true){
+        if (referenced == true) {
             reference++;
             this.referenced = referenced;
         }
     }
 
-
     public Boolean getModified() {
         return modified;
     }
+
     public void setModified(Boolean modified) {
         this.modified = modified;
     }
 
-
     public Boolean getPresent() {
         return present;
     }
+
     public void setPresent(Boolean present) {
         this.present = present;
     }
 
-
     public Integer getVirtualPage() {
         return Virtual_Page;
     }
+
     public void setVirtual_Page(Integer Virtual_Page) {
         this.Virtual_Page = Virtual_Page;
     }
 
+    public Boolean existPage() {
 
-    public Boolean existPage(){
-        
-        if(Virtual_Page==null){
+        if (Virtual_Page == null) {
             return false;
         }
         return true;
@@ -82,16 +86,33 @@ public class Pagenation{
     public void setValue(Integer value) {
         this.value = value;
     }
-    
-    public void print(){
-        
-        System.out.println("Referenciada: "+ referenced + "Vezes: " + reference + "\n"  //OPERADOR TERNARIO(TENTAR)
-                         + "Modificada: "+ modified + "\n"
-                         + "Presente: "+ present + "\n"
-                         + "Página Virtual: "+ Virtual_Page);
+
+    public Integer getReference() {
+        return reference;
     }
 
-    public Object getValue(String escrita) {
-        return value;
+    public void setReference(Integer reference) {
+        this.reference = reference;
     }
+
+    public Integer getVirtual_Page() {
+        return Virtual_Page;
+    }
+
+    public Boolean getBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(Boolean blocked) {
+        this.blocked = blocked;
+    }
+
+    public void print() {
+
+        System.out.println("Referenciada: " + referenced + "Vezes: " + reference + "\n"  //OPERADOR TERNARIO(TENTAR)
+                + "Modificada: " + modified + "\n"
+                + "Presente: " + present + "\n"
+                + "Página Virtual: " + Virtual_Page);
+    }
+
 }

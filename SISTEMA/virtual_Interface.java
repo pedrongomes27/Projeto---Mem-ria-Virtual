@@ -1,6 +1,8 @@
 package SISTEMA;
 
-public interface virtual_Interface {
+import java.util.Map;
+
+public interface virtual_Interface extends Map {
 
     void Virtual_Mem(int storage);
 

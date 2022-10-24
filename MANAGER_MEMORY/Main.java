@@ -1,16 +1,17 @@
 package MANAGER_MEMORY;
 
+import SISTEMA.Pagenation;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.CyclicBarrier;
 
 
 public class Main {
-    
+
     public static void main(String[] args) {
-        int storage_Virtual = 10;
-        int threads = 3;  
-        
 //        Ram_Mem Ram = new Ram_Mem(storage_Virtual/2);
 //        Virtual_Mem Virtual = new Virtual_Mem();
 //        HD_Mem HD=new HD_Mem();
@@ -26,20 +27,20 @@ public class Main {
 //            e.printStackTrace();
 //        }
         //int threads = 3;
-        HashMap<Integer, String> memoriaVirtual = new HashMap<>();
-
-        for(int i = 0; i < storage_Virtual; i++) {
-            memoriaVirtual.put(i, null);
-        }
-        System.out.println(memoriaVirtual);
-
-        HashMap<Integer, String> memoriaFisica = new HashMap<>();
-
-        for(int i = 0; i < storage_Virtual/2; i++) {
-            memoriaFisica.put(i, null);
-        }
-        System.out.println(memoriaFisica);
-
+//        HashMap<Integer, String> memoriaVirtual = new HashMap<>();
+//
+//        for(int i = 0; i < storage_Virtual; i++) {
+//            memoriaVirtual.put(i, null);
+//        }
+//        System.out.println(memoriaVirtual);
+//
+//        HashMap<Integer, String> memoriaFisica = new HashMap<>();
+//
+//        for(int i = 0; i < storage_Virtual/2; i++) {
+//            memoriaFisica.put(i, null);
+//        }
+//        System.out.println(memoriaFisica);
+//
 
         //Ram_Mem Ram = new Ram_Mem(storage_Virtual/2);
 //        Virtual_Mem Virtual = new Virtual_Mem();
@@ -53,43 +54,45 @@ public class Main {
         //EXEMPLO QUE COMO USAR A FABRICA DE ENTRADAS
         //Memoria Virtual Minima = 10
         //Memoria Virtual Maxima = 40
-        int tamanhoDaMinhaMemoriaVirtual = 10;
-        String SUA_ENTRADA = new EntryFactory(tamanhoDaMinhaMemoriaVirtual).getNewEntrada();
-        System.out.println(SUA_ENTRADA);
-        String[] strSplit = SUA_ENTRADA.split("[-,]");
-        System.out.println(SUA_ENTRADA);
-        ArrayList<String> strList = new ArrayList<String>(
-            Arrays.asList(strSplit));
-        System.out.println(strList);
-        String endereco = "";
-        String escrita = "";
-        for (int i = 0; i<strList.size(); i++) {
-            if (strList.get(i).contains("R")) {
-                endereco = strList.get(i - 1);
-                System.out.println("LENDO O ENDERECO " + endereco);
-                System.out.println(memoriaVirtual.get(Integer.parseInt(endereco)));
-            }
-            if (strList.get(i).contains("W")) {
-                endereco = strList.get(i - 1);
-                escrita = strList.get(i + 1);
-                System.out.println("ESCREVENDO " + escrita + " NO ENDERECO " + endereco);
-                memoriaVirtual.put(Integer.parseInt(endereco), escrita);
-            }
-
-        }
-
-        System.out.println(memoriaVirtual);
 
 
+
+//        int tamanhoDaMinhaMemoriaVirtual = 10;
+//        String SUA_ENTRADA = new EntryFactory(tamanhoDaMinhaMemoriaVirtual).getNewEntrada();
+//        System.out.println(SUA_ENTRADA);
+//        String[] strSplit = SUA_ENTRADA.split("[-,]");
+//        System.out.println(SUA_ENTRADA);
+//        ArrayList<String> strList = new ArrayList<String>(
+//                Arrays.asList(strSplit));
+//        System.out.println(strList);
+//        String endereco = "";
+//        String escrita = "";
+//        for (int i = 0; i<strList.size(); i++) {
+//            if (strList.get(i).contains("R")) {
+//                endereco = strList.get(i - 1);
+//                System.out.println("LENDO O ENDERECO " + endereco);
+//                System.out.println(memoriaVirtual.get(Integer.parseInt(endereco)));
+//            }
+//            if (strList.get(i).contains("W")) {
+//                endereco = strList.get(i - 1);
+//                escrita = strList.get(i + 1);
+//                System.out.println("ESCREVENDO " + escrita + " NO ENDERECO " + endereco);
+//                memoriaVirtual.put(Integer.parseInt(endereco), escrita);
+//            }
+//
+//        }
+//
+//        System.out.println(memoriaVirtual);
+
+        int storage_Virtual = 10;
+        int threads = 3;
+        //Instancia do buffer
         Buffer b = new Buffer();
-        HashMap memoria = b.iniciarMemoriaVirtual();
-        Processo a =  new Processo(b, memoria);
-        Processo c =  new Processo(b, memoria);
-        a.start();
-        c.start();
+        Pagenation[] memoria = b.iniciarMemoriaVirtual();
+        CyclicBarrier barrier = new CyclicBarrier(3);
+        //Criação das Threads
+        for(int i = 0; i < threads; i++){
+            new Processo(b, memoria, barrier).start();
+        }
     }
-
-
-
-
 }
