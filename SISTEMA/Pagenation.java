@@ -8,7 +8,7 @@ public class Pagenation {
     private Integer reference;
     private Boolean modified;   //MODIFICADO
     private Boolean present;    //PRESENTE/AUSENTE
-    private Integer Virtual_Page;   //MOLDURA DA PAGINA VIRTUAL
+    private Integer Virtual_Page;   //ENDEREÇO DA MEMORIA
     private Integer value;    //VALOR
 
     public Integer getTimer() {
@@ -23,6 +23,16 @@ public class Pagenation {
 
     private Boolean blocked;
 
+    public Pagenation() { //    INICIA TODAS AS PÁGINAS VAZIAS
+        this.referenced = false;
+        this.reference = 0;
+        this.modified = false;
+        this.present = false;
+        this.Virtual_Page = null;
+        this.blocked = false;
+        this.timer = 0;
+    }
+
     public Pagenation(Integer Virtual_Page) {
         this.referenced = false;
         this.reference = 0;
@@ -33,18 +43,17 @@ public class Pagenation {
         this.timer = 0;
     }
 
-
     @Override
-    public String toString() {
+    public String toString() { //   PRINT DA PÁGINA VIRTUAL
         return "Página{" +
-                "Referenced='" + referenced + '\'' +
-                ", reference='" + reference + '\'' +
-                ", modified='" + modified + '\'' +
-                ", present='" + present + '\'' +
-                ", virtual_page='" + Virtual_Page + '\'' +
-                ", value='" + value + '\'' +
-                ", blocked='" + blocked + '\'' +
-                ", timer='" + timer + '\'' +
+                "Referenced='" + referenced +
+                ", reference='" + reference +
+                ", modified='" + modified +
+                ", present='" + present +
+                ", virtual_page='" + Virtual_Page +
+                ", value='" + value +
+                ", blocked='" + blocked +
+                ", timer='" + timer +
                 '}';
     }
 
@@ -119,12 +128,5 @@ public class Pagenation {
         this.blocked = blocked;
     }
 
-    public void print() {
-
-        System.out.println("Referenciada: " + referenced + "Vezes: " + reference + "\n"  //OPERADOR TERNARIO(TENTAR)
-                + "Modificada: " + modified + "\n"
-                + "Presente: " + present + "\n"
-                + "Página Virtual: " + Virtual_Page);
-    }
 
 }

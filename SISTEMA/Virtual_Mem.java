@@ -1,73 +1,28 @@
 package SISTEMA;
 
-public class Virtual_Mem implements virtual_Interface{
-    private Pagenation[] memory_Virtual;
+import java.util.ArrayList;
+
+public class Virtual_Mem {
+    private ArrayList<Pagenation> memory_Virtual;
     private HD_Mem HD;
     private Ram_Mem Ram;
     private int storage = -1;
 
-
+    private int Class;
 
 
     public void Virtual_Mem(int storage) {
         for(int i=0; i<=storage; i++){
 
-//            memory_Virtual = new Pagenation[i];
-//
-//            HashMap<Integer, Pagenation> memoria = new HashMap<>();
-//
-//            memoria.put(i, new Pagenation( i));
-//
-//            System.out.println(memoria);
        }
     }
 
     public Pagenation getMemory_Virtual(int index) {
-        return memory_Virtual[index];
+        return memory_Virtual.get(index);
     }
 
-   
-    public void PrintVirtual(){
-        
-        for(int i=0; i<=memory_Virtual.length; i++){
-                        
-            if(memory_Virtual[i] != null ){
-                
-                System.out.println("Index [" + i + "] de valor =" + memory_Virtual[i]);
-                
-            }else System.out.println("Index [" + i + "] está vazio");
-            
-        }
-            
+    public void setClass(int Class) {
+        this.Class = Class;
     }
 
-
-    public int getIndexValue() {
-        return 0;
-    }
-
-
-    public void updateValue(int index, int a, int b) {
-
-        memory_Virtual[index].setValue(a+b);
-
-    }
-
-
-
-
-
-    public boolean isEmpty() {
-        return false;
-    }
-
-
-    public boolean containsKey(Object key) {
-        return false;
-    }
-
-
-    public boolean containsValue(Object value) {
-        return false;
-    }
 }

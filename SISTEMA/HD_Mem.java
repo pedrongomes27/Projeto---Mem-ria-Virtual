@@ -1,6 +1,9 @@
 package SISTEMA;
+import java.io.*;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
-public class HD_Mem{
+public class HD_Mem {
     
     private Integer[] memory_HD; // Definição do array da memória do HD
     private static int storage = 2352626;
@@ -21,7 +24,7 @@ public class HD_Mem{
 
 
     
-    public Integer getIndexFree(){  //Retornar se há algum espaço de memoria do HD vazio
+    public Integer getIndexFree(){  //Retornar se há algum espaço de memória do HD vazio
         
         for(int i=0; i<=storage; i++){
             
@@ -35,7 +38,7 @@ public class HD_Mem{
         return null;
     }
 
-    public void PrintHD(){  //Printar toda a memoria do HD
+    public void PrintHD(){  //Printar toda a memória do HD
                 
         for(int i=0; i<=memory_HD.length; i++){
             
@@ -49,5 +52,14 @@ public class HD_Mem{
             }
             
         }
+    }
+
+
+    public static void imprimir () throws IOException {
+
+        FileWriter arq = new FileWriter("diretorio");
+        PrintWriter gravarArq = new PrintWriter(arq);
+        gravarArq.printf("");
+        arq.close();
     }
 }

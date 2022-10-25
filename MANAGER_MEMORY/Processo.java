@@ -2,19 +2,18 @@ package MANAGER_MEMORY;
 
 import SISTEMA.Pagenation;
 
+import java.util.ArrayList;
 import java.util.concurrent.CyclicBarrier;
 
 public class Processo extends Thread{
-    MMU buffer;
-    Pagenation[] memoria;
+    MMU MMU;
+    ArrayList<Pagenation> memoria;
     CyclicBarrier barrier;
 
     Integer storage_Virtual = 10;
 
-
-
-    public Processo(MMU b, Pagenation[] memoria, CyclicBarrier barrier) {
-        this.buffer = b;
+    public Processo(MMU m, ArrayList<Pagenation> memoria, CyclicBarrier barrier) {
+        this.MMU = m;
         this.memoria = memoria;
         this.barrier = barrier;
     }
@@ -31,12 +30,13 @@ public class Processo extends Thread{
 
         try{
             synchronized(this) {
-                Pagenation[] virtual = buffer.iniciarMemoriaVirtual(storage_Virtual);
+                ArrayList<Pagenation> virtual = MMU.iniciarMemoriaVirtual(storage_Virtual);
+                ArrayList<Pagenation> Fisica = MMU.iniciarMemoriaFisica(storage_Virtual);
                 System.out.println(virtual);
-                buffer.teste(memoria);
+                MMU.Manager_Memory(memoria);
                 System.out.println("Fim da thread" + Thread.currentThread().getName() + ": ");
-                for(int i = 0; i < memoria.length; i++){
-                    System.out.println(memoria[i]);
+                for(int i = 0; i < memoria.size(); i++){
+                    System.out.println(memoria.get(i));
                     await(barrier);
                 }
             }

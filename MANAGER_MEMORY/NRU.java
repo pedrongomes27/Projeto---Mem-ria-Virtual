@@ -21,27 +21,27 @@ public class NRU {
         this.Page = Page;
     }
 
-    public Integer NotUsedRecently(){
-        for(int i = 0; i <= tamanho; i++){
-            
-            Referenced_Position = Virtual.getMemory_Virtual(i).getReferenced();
-            Modified_Position = Virtual.getMemory_Virtual(i).getModified();
-            
-            if((Referenced_Position == false) && (Modified_Position == false)){   // Classe 0: não referenciada (0), não modificada (0)
-                return i;     
-            }
-            if((Referenced_Position == false) && (Modified_Position == true)){    // Classe 1: não referenciada (0), modificada (1)
-                return i;
-            }
-            if((Referenced_Position == true) && (Modified_Position == false)){    // Classe 2: referenciada (1), não modificada (0)
-                return i;
-            }
-            if((Referenced_Position == true) && (Modified_Position == true)){     // Classe 3: referenciada (1), modificada (1)
-                return i;
-            }
-        }
-        return null;
-    }
+//    public Integer AlgorithmNRU(){
+//        for(int i = 0; i <= tamanho; i++){
+//
+//            Referenced_Position = Virtual.getMemory_Virtual(i).getReferenced();
+//            Modified_Position = Virtual.getMemory_Virtual(i).getModified();
+//
+//            if((Referenced_Position == false) && (Modified_Position == false)){   // Classe 0: não referenciada (0), não modificada (0)
+//                Virtual.setClass(0);
+//            }
+//            if((Referenced_Position == false) && (Modified_Position == true)){    // Classe 1: não referenciada (0), modificada (1)
+//                Virtual.setClass(1);
+//            }
+//            if((Referenced_Position == true) && (Modified_Position == false)){    // Classe 2: referenciada (1), não modificada (0)
+//                Virtual.setClass(2);
+//            }
+//            if((Referenced_Position == true) && (Modified_Position == true)){     // Classe 3: referenciada (1), modificada (1)
+//                Virtual.setClass(3);
+//            }
+//        }
+//        return null;
+//    }
 }
 
 
