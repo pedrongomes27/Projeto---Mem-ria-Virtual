@@ -55,11 +55,13 @@ public class HD_Mem {
     }
 
 
-    public static void imprimir () throws IOException {
+    public static void Escrever_HD() throws IOException {
 
-        FileWriter arq = new FileWriter("diretorio");
+        FileWriter arq = new FileWriter("c://HD_Mem.txt");
         PrintWriter gravarArq = new PrintWriter(arq);
-        gravarArq.printf("");
+
+        gravarArq.printf("asdasd");
+
         arq.close();
     }
 }

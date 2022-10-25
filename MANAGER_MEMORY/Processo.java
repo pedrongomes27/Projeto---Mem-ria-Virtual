@@ -12,10 +12,9 @@ public class Processo extends Thread{
 
     Integer storage_Virtual = 10;
 
-    public Processo(MMU m, ArrayList<Pagenation> memoria, CyclicBarrier barrier) {
+    public Processo(MMU m, ArrayList<Pagenation> memoria) {
         this.MMU = m;
         this.memoria = memoria;
-        this.barrier = barrier;
     }
 
     public void await(CyclicBarrier Barrier) {
@@ -30,15 +29,14 @@ public class Processo extends Thread{
 
         try{
             synchronized(this) {
+                //Inicialização das memórias virtual e física
                 ArrayList<Pagenation> virtual = MMU.iniciarMemoriaVirtual(storage_Virtual);
                 ArrayList<Pagenation> Fisica = MMU.iniciarMemoriaFisica(storage_Virtual);
                 System.out.println(virtual);
+                //Chamada do genrenciador de memória
                 MMU.Manager_Memory(memoria);
                 System.out.println("Fim da thread" + Thread.currentThread().getName() + ": ");
-                for(int i = 0; i < memoria.size(); i++){
-                    System.out.println(memoria.get(i));
-                    await(barrier);
-                }
+
             }
         }catch(Exception e){
         }
