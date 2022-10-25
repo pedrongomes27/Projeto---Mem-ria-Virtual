@@ -11,6 +11,16 @@ public class Pagenation {
     private Integer Virtual_Page;   //MOLDURA DA PAGINA VIRTUAL
     private Integer value;    //VALOR
 
+    public Integer getTimer() {
+        return timer;
+    }
+
+    public void setTimer(Integer timer) {
+        this.timer = timer;
+    }
+
+    private Integer timer;
+
     private Boolean blocked;
 
     public Pagenation(Integer Virtual_Page) {
@@ -20,6 +30,7 @@ public class Pagenation {
         this.present = false;
         this.Virtual_Page = null;
         this.blocked = false;
+        this.timer = 0;
     }
 
 
@@ -33,6 +44,7 @@ public class Pagenation {
                 ", virtual_page='" + Virtual_Page + '\'' +
                 ", value='" + value + '\'' +
                 ", blocked='" + blocked + '\'' +
+                ", timer='" + timer + '\'' +
                 '}';
     }
 

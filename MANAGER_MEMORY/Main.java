@@ -2,16 +2,28 @@ package MANAGER_MEMORY;
 
 import SISTEMA.Pagenation;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.CyclicBarrier;
 
 
 public class Main {
 
     public static void main(String[] args) {
+        int storage_Virtual = 10;
+        int threads = 3;
+        //Instancia do buffer
+        MMU b = new MMU();
+        //Inicialização da memória virtual
+        Pagenation[] memoria = b.iniciarMemoriaVirtual(storage_Virtual);
+        CyclicBarrier barrier = new CyclicBarrier(3);
+        //Criação das Threads
+        for(int i = 0; i < threads; i++){
+            new Processo(b, memoria, barrier).start();
+        }
+    }
+}
+
+
+
 //        Ram_Mem Ram = new Ram_Mem(storage_Virtual/2);
 //        Virtual_Mem Virtual = new Virtual_Mem();
 //        HD_Mem HD=new HD_Mem();
@@ -26,7 +38,7 @@ public class Main {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-        //int threads = 3;
+//int threads = 3;
 //        HashMap<Integer, String> memoriaVirtual = new HashMap<>();
 //
 //        for(int i = 0; i < storage_Virtual; i++) {
@@ -42,7 +54,7 @@ public class Main {
 //        System.out.println(memoriaFisica);
 //
 
-        //Ram_Mem Ram = new Ram_Mem(storage_Virtual/2);
+//Ram_Mem Ram = new Ram_Mem(storage_Virtual/2);
 //        Virtual_Mem Virtual = new Virtual_Mem();
 //        //HD_Mem HD=new HD_Mem();
 //        Virtual.Virtual_Mem(storage_Virtual);
@@ -51,9 +63,9 @@ public class Main {
 //        Array MemFisica = {null,null,null,null};
 
 
-        //EXEMPLO QUE COMO USAR A FABRICA DE ENTRADAS
-        //Memoria Virtual Minima = 10
-        //Memoria Virtual Maxima = 40
+//EXEMPLO QUE COMO USAR A FABRICA DE ENTRADAS
+//Memoria Virtual Minima = 10
+//Memoria Virtual Maxima = 40
 
 
 
@@ -83,16 +95,3 @@ public class Main {
 //        }
 //
 //        System.out.println(memoriaVirtual);
-
-        int storage_Virtual = 10;
-        int threads = 3;
-        //Instancia do buffer
-        Buffer b = new Buffer();
-        Pagenation[] memoria = b.iniciarMemoriaVirtual();
-        CyclicBarrier barrier = new CyclicBarrier(3);
-        //Criação das Threads
-        for(int i = 0; i < threads; i++){
-            new Processo(b, memoria, barrier).start();
-        }
-    }
-}

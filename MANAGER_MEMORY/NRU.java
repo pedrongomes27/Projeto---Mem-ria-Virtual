@@ -19,11 +19,9 @@ public class NRU {
         this.Ram = Ram;
         this.HD = HD;
         this.Page = Page;
-
     }
 
     public Integer NotUsedRecently(){
-            
         for(int i = 0; i <= tamanho; i++){
             
             Referenced_Position = Virtual.getMemory_Virtual(i).getReferenced();
@@ -41,7 +39,6 @@ public class NRU {
             if((Referenced_Position == true) && (Modified_Position == true)){     // Classe 3: referenciada (1), modificada (1)
                 return i;
             }
-        
         }
         return null;
     }
