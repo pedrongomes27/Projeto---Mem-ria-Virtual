@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static java.lang.Thread.sleep;
 
@@ -20,11 +19,11 @@ public class MMU {
     //Dando split para retirar o hífen e a vírgula
     private String[] strSplit = SUA_ENTRADA.split("[-,]");
     //Transformando a lista String[] srtSplit em arraylist para facilitar o manuseio dos indices
-    private ArrayList<String> comandos = new ArrayList<String>(Arrays.asList(strSplit));
+//    private ArrayList<String> comandos = new ArrayList<String>(Arrays.asList(strSplit));
 
-    //  NRU algoritmo = new NRU();
+    // NRU algoritmo = new NRU();
 
-    //Método para iniciar a memória virtual
+    // Método para iniciar a memória virtual
     public ArrayList<Pagenation> iniciarMemoriaVirtual(Integer storageVirtual) {
         // CRIAÇÃO DE UM ARRAYLIST DE PAGINAS VIRTUAIS
         ArrayList<Pagenation> memoriaVirtual = new ArrayList<Pagenation>(storageVirtual);
@@ -35,6 +34,55 @@ public class MMU {
         return memoriaVirtual;
     }
 
+        public void NRU(Pagenation memoriaVirtual) throws IOException {
+            // LISTA DE PRIORIDADE
+            // PRIORIDADE MAIS ALTA
+            if (!memoriaVirtual.getReferenced() && !memoriaVirtual.getModified()) { // CLASSE 0
+//                Escrever_HD(memoriaVirtual);
+                memoriaVirtual.setReference(0);
+                memoriaVirtual.setModified(false);
+                memoriaVirtual.setPresent(false);
+                memoriaVirtual.setVirtual_Page(null);
+                memoriaVirtual.setValue(null);
+                memoriaVirtual.setBlocked(false);
+            }
+            // SEGUNDA MAIS ALTA
+            else if (!memoriaVirtual.getReferenced() && memoriaVirtual.getModified()) { //  CLASSE 1
+//                Escrever_HD(memoriaVirtual);
+                memoriaVirtual.setReferenced(false);
+                memoriaVirtual.setReference(0);
+                memoriaVirtual.setModified(false);
+                memoriaVirtual.setPresent(false);
+                memoriaVirtual.setVirtual_Page(null);
+                memoriaVirtual.setValue(null);
+                memoriaVirtual.setBlocked(false);
+            }
+            //TERCEIRA MAIS IMPORTANTE
+            else if (memoriaVirtual.getReferenced() && !memoriaVirtual.getModified()) { //  CLASSE 2
+//                Escrever_HD(memoriaVirtual);
+                memoriaVirtual.setReferenced(false);
+                memoriaVirtual.setReference(0);
+                memoriaVirtual.setModified(false);
+                memoriaVirtual.setPresent(false);
+                memoriaVirtual.setVirtual_Page(null);
+                memoriaVirtual.setValue(null);
+                memoriaVirtual.setBlocked(false);
+            }
+            // QUARTA MAIS IMPORTANTE
+            else if (memoriaVirtual.getReferenced() && memoriaVirtual.getModified()) { //   CLASSE 3
+//                Escrever_HD(memoriaVirtual);
+
+                memoriaVirtual.setReferenced(false);
+                memoriaVirtual.setReference(0);
+                memoriaVirtual.setModified(false);
+                memoriaVirtual.setPresent(false);
+                memoriaVirtual.setVirtual_Page(null);
+                memoriaVirtual.setValue(null);
+                memoriaVirtual.setBlocked(false);
+            }
+        }
+
+
     //Método para iniciar a memória física
     public ArrayList<String> iniciarMemoriaFisica(Integer espacoMemoriaVirtual) {
         Integer storage_Fisica = espacoMemoriaVirtual / 2;
@@ -44,6 +92,16 @@ public class MMU {
         }
         System.out.println(memoriaFisica);
         return memoriaFisica;
+    }
+
+
+    public void inserirFisico(String valor, ArrayList<String> memoriaFisica){
+        System.out.println("Inserir na memoria física");
+        for(int i = 0; i < memoriaFisica.size();i++) {
+            if(!memoriaFisica.get(i).equals("")){
+                memoriaFisica.set(i, valor);
+            }
+        }
     }
 
     //Método para escrever no HD
@@ -57,148 +115,104 @@ public class MMU {
         arq.close();
     }
 
-
-    //Método para rodar pela lista de arrays, identificar uma página que possui
-    public void NRU(ArrayList<Pagenation> memoriaVirtual) throws IOException {
-        for (Pagenation pagenation : memoriaVirtual) {
-            // LISTA DE PRIORIDADE
-            // PRIORIDADE MAIS ALTA
-            if (!pagenation.getReferenced() && !pagenation.getModified()) { // CLASSE 0
-                Escrever_HD(pagenation);
-                pagenation.setReference(0);
-                pagenation.setModified(false);
-                pagenation.setPresent(false);
-                pagenation.setVirtual_Page(null);
-                pagenation.setValue(null);
-                pagenation.setBlocked(false);
+    public synchronized void leitura(Pagenation memoriaVirtual, int i, String comandos, String endereco) throws InterruptedException {
+        sleep(100);
+        Pagenation p = memoriaVirtual;
+        //Se o atributo "Blocked" for falso, preosseguir com o método
+        if (!memoriaVirtual.getBlocked()) {
+            //Se a página não estiver preenchida, dizer que ela está vazia e pular
+                if ((!p.getModified())) {
+                    memoriaVirtual.setBlocked(true);
+                    memoriaVirtual.setReferenced(true);
+                    System.out.println(Thread.currentThread().getName()+" LENDO O ENDERECO: " + endereco);
+                    System.out.println("Página vazia");
+                //Se estiver preenchida e não estiver bloqueada, ler normalmente
+            } else {
+                    memoriaVirtual.setBlocked(true);
+                    memoriaVirtual.setReferenced(true);
+                    System.out.println(Thread.currentThread().getName()+" LENDO O ENDERECO: " + endereco);
+                    System.out.println(memoriaVirtual);
+            }}
+            //Se estiver bloqueada, alertar e prosseguir para o próximo
+            else{
+            try {
+                NRU(memoriaVirtual);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-            // SEGUNDA MAIS ALTA
-            else if (!pagenation.getReferenced() && pagenation.getModified()) { //  CLASSE 1
-                Escrever_HD(pagenation);
-                pagenation.setReferenced(false);
-                pagenation.setReference(0);
-                pagenation.setModified(false);
-                pagenation.setPresent(false);
-                pagenation.setVirtual_Page(null);
-                pagenation.setValue(null);
-                pagenation.setBlocked(false);
-            }
-            //TERCEIRA MAIS IMPORTANTE
-            else if (pagenation.getReferenced() && !pagenation.getModified()) { //  CLASSE 2
-                Escrever_HD(pagenation);
-                pagenation.setReferenced(false);
-                pagenation.setReference(0);
-                pagenation.setModified(false);
-                pagenation.setPresent(false);
-                pagenation.setVirtual_Page(null);
-                pagenation.setValue(null);
-                pagenation.setBlocked(false);
-            }
-            // QUARTA MAIS IMPORTANTE
-            else if (pagenation.getReferenced() && pagenation.getModified()) { //   CLASSE 3
-                Escrever_HD(pagenation);
-                pagenation.setReferenced(false);
-                pagenation.setReference(0);
-                pagenation.setModified(false);
-                pagenation.setPresent(false);
-                pagenation.setVirtual_Page(null);
-                pagenation.setValue(null);
-                pagenation.setBlocked(false);
-            }
+            //            System.out.println(Thread.currentThread().getName()+" pulou " + "O ENDERECO " + endereco);
+                return;
         }
+            sleep(100);
     }
 
-
-
-    public synchronized void leitura(ArrayList<Pagenation> memoriaVirtual, int i) throws InterruptedException {
-        endereco = comandos.get(i - 1);
-        Pagenation p = memoriaVirtual.get(Integer.valueOf(endereco));
-        //Se o atributo "Blocked" for falso, preosseguir com o método
-        if (!memoriaVirtual.get(Integer.valueOf(endereco)).getBlocked()) {
-
-        //Se a página não estiver preenchida, dizer que ela está vazia e pular
-            if ((!p.getModified())) {
-            memoriaVirtual.get(Integer.valueOf(endereco)).setBlocked(true);
-            memoriaVirtual.get(Integer.valueOf(endereco)).setReferenced(true);
-            System.out.println(Thread.currentThread().getName()+" LENDO O ENDERECO " + endereco);
-            System.out.println("Página vazia");
-            //Se estiver preenchida e não estiver bloqueada, ler normalmente
-        } else {
-            memoriaVirtual.get(Integer.valueOf(endereco)).setBlocked(true);
-            memoriaVirtual.get(Integer.valueOf(endereco)).setReferenced(true);
-            System.out.println(Thread.currentThread().getName()+" LENDO O ENDERECO " + endereco);
-            System.out.println(memoriaVirtual.get(Integer.valueOf(endereco)));
-        }}
-        //Se estiver bloqueada, alertar e prosseguir para o próximo
-        else{
-            System.out.println(Thread.currentThread().getName()+" pulou " + "O ENDERECO " + endereco);
-            return;
-        }
+    public synchronized void escrita(Pagenation memoriaVirtual, int i, String comandos, String endereco, String escrita) throws InterruptedException, IOException {
         sleep(20);
-    }
-
-    public synchronized void escrita(ArrayList<Pagenation> memoriaVirtual, int i) throws InterruptedException, IOException {
-        endereco = comandos.get(i - 1);
-        escrita = comandos.get(i + 1);
-        //Se o atributo "Blocked" for falso, preosseguir com o método
-        if (!memoriaVirtual.get(Integer.valueOf(endereco)).getBlocked()) {
+        //Se o atributo "Blocked" for falso, prosseguir com o método
+        if (!memoriaVirtual.getBlocked()) {
             //Se a página estiver vazia, preencher ela com novos dados
-            if (!memoriaVirtual.get(Integer.valueOf(endereco)).getModified()) {
-                memoriaVirtual.get(Integer.valueOf(endereco)).setBlocked(true);
+            if (!memoriaVirtual.getModified()) {
+                memoriaVirtual.setBlocked(true);
                 System.out.println(Thread.currentThread().getName() + " ESCREVENDO: " + escrita + " NO ENDERECO: " + endereco);
-                memoriaVirtual.get(Integer.valueOf(endereco)).setValue(Integer.valueOf(escrita));
-                memoriaVirtual.get(Integer.valueOf(endereco)).setVirtual_Page(Integer.valueOf(endereco));
-                memoriaVirtual.get(Integer.valueOf(endereco)).setReferenced(true);
-                memoriaVirtual.get(Integer.valueOf(endereco)).setModified(true);
-                memoriaVirtual.get(Integer.valueOf(endereco)).setPresent(true);
+                memoriaVirtual.setValue(Integer.valueOf(escrita));
+                memoriaVirtual.setVirtual_Page(Integer.valueOf(endereco));
+                memoriaVirtual.setReferenced(true);
+                memoriaVirtual.setModified(true);
+                memoriaVirtual.setPresent(true);
                 System.out.println("Página escrita");
             }
 
         //Se existir e não estiver bloqueada, escrever normalmente
             else {
                 //Se a página existir, sobrescrever o que há nela
-// O método está quebrado               NRU(memoriaVirtual);
-                memoriaVirtual.get(Integer.valueOf(endereco)).setBlocked(true);
-                System.out.println(Thread.currentThread().getName()+" SOBRESCREVENDO " + escrita + " NO ENDERECO " + endereco);
-                memoriaVirtual.get(Integer.valueOf(endereco)).setValue(Integer.valueOf(escrita));
-                memoriaVirtual.get(Integer.valueOf(endereco)).setVirtual_Page(Integer.valueOf(endereco));
-                memoriaVirtual.get(Integer.valueOf(endereco)).setReferenced(true);
-                memoriaVirtual.get(Integer.valueOf(endereco)).setModified(true);
+                // O método está quebrado
+
+                memoriaVirtual.setBlocked(true);
+                System.out.println(Thread.currentThread().getName()+" SOBRESCREVENDO: " + escrita + " NO ENDERECO: " + endereco);
+                memoriaVirtual.setValue(Integer.valueOf(escrita));
+                memoriaVirtual.setVirtual_Page(Integer.valueOf(endereco));
+                memoriaVirtual.setReferenced(true);
+                memoriaVirtual.setModified(true);
                 System.out.println("Página atualizada");
             }
         }
         //Se estiver bloqueada, alertar e prosseguir para o próximo
         else{
-            System.out.println(Thread.currentThread().getName() + " pulou " + "O ENDERECO " + endereco);
+            NRU(memoriaVirtual);
+//  System.out.println(Thread.currentThread().getName() + " pulou " + "O ENDERECO " + endereco);
             return;
         }
         sleep(20);
     }
 
     //Método para manipular a memória virtual escrevendo e lendo os valores em suas respectivas páginas
-    public void Manager_Memory(ArrayList<Pagenation> memoriaVirtual) throws InterruptedException, IOException {
-        System.out.println(SUA_ENTRADA); // PRINTA AS ENTRADAS DA FABRICA DE ENTRADAS
-        for (int i = 0; i< comandos.size(); i++) {
+    public void Manager_Memory(Pagenation memoriaVirtual, int i, String valor, String endereco, String escrita) throws InterruptedException, IOException {
+         // PRINTA AS ENTRADAS DA FABRICA DE ENTRADAS
             //rodar contador na página virtual para identificar por quanto tempo ela ficou ativa
-            for (Pagenation pag : memoriaVirtual) {
-                pag.setTimer(pag.getTimer() + 1);
-                if (pag.getReferenced()) {
-                    if (pag.getTimer() >= 20) {
-                        pag.setBlocked(false);
-                        pag.setReferenced(false);
-                        pag.setTimer(0);
+//                memoriaVirtual.setTimer(memoriaVirtual.getTimer() + 1);
+
+//        memoriaVirtual.get(i-1).setTimer(memoriaVirtual.get(i-1).getTimer() + 1);
+//        if (memoriaVirtual.get(i-1).getReferenced()) {
+//            if (memoriaVirtual.get(i-1).getTimer() >= 20) {
+//                memoriaVirtual.get(i-1).setBlocked(false);
+//                memoriaVirtual.get(i-1).setReferenced(false);
+//                memoriaVirtual.get(i-1).setTimer(0);
+//            }
+//        }
+                if (memoriaVirtual.getReferenced()) {
+                    if (memoriaVirtual.getTimer() >= 20) {
+                        memoriaVirtual.setBlocked(false);
+                        memoriaVirtual.setReferenced(false);
+                        memoriaVirtual.setTimer(0);
                     }
                 }
-            }
             //Se a operação for de leitura, rodar o método para escrever na página virtual
-            if (comandos.get(i).contains("R")) {
-                leitura(memoriaVirtual, i);
+            if (valor.contains("R")) {
+                leitura(memoriaVirtual, i, valor, endereco);
             }
             //Se a operação for de escrita, rodar o método para escrever na página virtual
-            else if (comandos.get(i).contains("W")) {
-                escrita(memoriaVirtual, i);
+            else if (valor.contains ("W")) {
+                escrita(memoriaVirtual, i, valor, endereco, escrita);
             }
-        }
-        System.out.println(memoriaVirtual);
     }
 }

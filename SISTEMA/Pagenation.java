@@ -33,17 +33,16 @@ public class Pagenation {
         this.timer = 0;
     }
 
-    public Pagenation(Integer Virtual_Page) {
-        this.referenced = false;
-        this.reference = 0;
-        this.modified = false;
-        this.present = false;
-        this.Virtual_Page = null;
-        this.blocked = false;
-        this.timer = 0;
-    }
+//    public Pagenation(Integer Virtual_Page) {
+//        this.referenced = false;
+//        this.reference = 0;
+//        this.modified = false;
+//        this.present = false;
+//        this.Virtual_Page = null;
+//        this.blocked = false;
+//        this.timer = 0;
+//    }
 
-    @Override
     public String toString() { //   PRINT DA PÁGINA VIRTUAL
         return "Página{" +
                 "Referenced='" + referenced +
@@ -88,18 +87,6 @@ public class Pagenation {
         return Virtual_Page;
     }
 
-    public void setVirtual_Page(Integer Virtual_Page) {
-        this.Virtual_Page = Virtual_Page;
-    }
-
-    public Boolean existPage() {
-
-        if (Virtual_Page == null) {
-            return false;
-        }
-        return true;
-    }
-
     public Integer getValue() {
         return value;
     }
@@ -116,8 +103,8 @@ public class Pagenation {
         this.reference = reference;
     }
 
-    public Integer getVirtual_Page() {
-        return Virtual_Page;
+    public void setVirtual_Page(Integer Virtual_Page) {
+        this.Virtual_Page = Virtual_Page;
     }
 
     public Boolean getBlocked() {

@@ -5,6 +5,9 @@ import SISTEMA.Pagenation;
 import SISTEMA.Ram_Mem;
 import SISTEMA.Virtual_Mem;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class NRU {
     private Virtual_Mem Virtual;
     private Ram_Mem Ram;
@@ -42,6 +45,57 @@ public class NRU {
 //        }
 //        return null;
 //    }
+
+    //Método para rodar pela lista de arrays, identificar uma página que possui
+    public void NRU(ArrayList<Pagenation> memoriaVirtual) throws IOException {
+        for (Pagenation pagenation : memoriaVirtual) {
+            // LISTA DE PRIORIDADE
+            // PRIORIDADE MAIS ALTA
+            if (!pagenation.getReferenced() && !pagenation.getModified()) { // CLASSE 0
+                //Escrever_HD(pagenation);
+                pagenation.setReference(0);
+                pagenation.setModified(false);
+                pagenation.setPresent(false);
+                pagenation.setVirtual_Page(null);
+                pagenation.setValue(null);
+                pagenation.setBlocked(false);
+            }
+            // SEGUNDA MAIS ALTA
+            else if (!pagenation.getReferenced() && pagenation.getModified()) { //  CLASSE 1
+                //Escrever_HD(pagenation);
+                pagenation.setReferenced(false);
+                pagenation.setReference(0);
+                pagenation.setModified(false);
+                pagenation.setPresent(false);
+                pagenation.setVirtual_Page(null);
+                pagenation.setValue(null);
+                pagenation.setBlocked(false);
+            }
+            //TERCEIRA MAIS IMPORTANTE
+            else if (pagenation.getReferenced() && !pagenation.getModified()) { //  CLASSE 2
+                //Escrever_HD(pagenation);
+                pagenation.setReferenced(false);
+                pagenation.setReference(0);
+                pagenation.setModified(false);
+                pagenation.setPresent(false);
+                pagenation.setVirtual_Page(null);
+                pagenation.setValue(null);
+                pagenation.setBlocked(false);
+            }
+            // QUARTA MAIS IMPORTANTE
+            else if (pagenation.getReferenced() && pagenation.getModified()) { //   CLASSE 3
+                //Escrever_HD(pagenation);
+                pagenation.setReferenced(false);
+                pagenation.setReference(0);
+                pagenation.setModified(false);
+                pagenation.setPresent(false);
+                pagenation.setVirtual_Page(null);
+                pagenation.setValue(null);
+                pagenation.setBlocked(false);
+            }
+        }
+    }
+
 }
 
 
