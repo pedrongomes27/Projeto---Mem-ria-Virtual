@@ -16,31 +16,31 @@ public class MMU {
     Integer storageVirtual = 10;
 
     //Chamada da fábrica de entradas
-    private String SUA_ENTRADA = new EntryFactory(storageVirtual).getNewEntrada(), endereco = "", escrita = "";
-    //Dando split para tirar o hífen e a vírgula
+    private String SUA_ENTRADA = new EntryFactory(storageVirtual).getNewEntrada(),  endereco = "", escrita = "";
+    //Dando split para retirar o hífen e a vírgula
     private String[] strSplit = SUA_ENTRADA.split("[-,]");
-    //Transformando em arraylist
+    //Transformando a lista String[] srtSplit em arraylist para facilitar o manuseio dos indices
     private ArrayList<String> comandos = new ArrayList<String>(Arrays.asList(strSplit));
 
     //  NRU algoritmo = new NRU();
 
     //Método para iniciar a memória virtual
     public ArrayList<Pagenation> iniciarMemoriaVirtual(Integer storageVirtual) {
-
+        // CRIAÇÃO DE UM ARRAYLIST DE PAGINAS VIRTUAIS
         ArrayList<Pagenation> memoriaVirtual = new ArrayList<Pagenation>(storageVirtual);
         for (int i = 0; i < storageVirtual; i++) {
-            memoriaVirtual.add(i, new Pagenation());
+            memoriaVirtual.add(i, new Pagenation()); // ADICIONA UMA NOVA PAGINA EM UM ENDEREÇO ATÉ ATINGIR O VALOR DEFINIDO PELA storageVirtual
         }
         System.out.println(memoriaVirtual);
         return memoriaVirtual;
     }
 
     //Método para iniciar a memória física
-    public ArrayList<Pagenation> iniciarMemoriaFisica(Integer espacoMemoriaVirtual) {
+    public ArrayList<String> iniciarMemoriaFisica(Integer espacoMemoriaVirtual) {
         Integer storage_Fisica = espacoMemoriaVirtual / 2;
-        ArrayList<Pagenation> memoriaFisica = new ArrayList<Pagenation>(storageVirtual);
+        ArrayList<String> memoriaFisica = new ArrayList<String>(storageVirtual);
         for (int i = 0; i < storage_Fisica; i++) {
-            memoriaFisica.add(i, new Pagenation());
+            memoriaFisica.add(i, "");
         }
         System.out.println(memoriaFisica);
         return memoriaFisica;
@@ -61,7 +61,8 @@ public class MMU {
     //Método para rodar pela lista de arrays, identificar uma página que possui
     public void NRU(ArrayList<Pagenation> memoriaVirtual) throws IOException {
         for (Pagenation pagenation : memoriaVirtual) {
-
+            // LISTA DE PRIORIDADE
+            // PRIORIDADE MAIS ALTA
             if (!pagenation.getReferenced() && !pagenation.getModified()) { // CLASSE 0
                 Escrever_HD(pagenation);
                 pagenation.setReference(0);
@@ -71,6 +72,7 @@ public class MMU {
                 pagenation.setValue(null);
                 pagenation.setBlocked(false);
             }
+            // SEGUNDA MAIS ALTA
             else if (!pagenation.getReferenced() && pagenation.getModified()) { //  CLASSE 1
                 Escrever_HD(pagenation);
                 pagenation.setReferenced(false);
@@ -81,6 +83,7 @@ public class MMU {
                 pagenation.setValue(null);
                 pagenation.setBlocked(false);
             }
+            //TERCEIRA MAIS IMPORTANTE
             else if (pagenation.getReferenced() && !pagenation.getModified()) { //  CLASSE 2
                 Escrever_HD(pagenation);
                 pagenation.setReferenced(false);
@@ -91,6 +94,7 @@ public class MMU {
                 pagenation.setValue(null);
                 pagenation.setBlocked(false);
             }
+            // QUARTA MAIS IMPORTANTE
             else if (pagenation.getReferenced() && pagenation.getModified()) { //   CLASSE 3
                 Escrever_HD(pagenation);
                 pagenation.setReferenced(false);
@@ -107,14 +111,13 @@ public class MMU {
 
 
     public synchronized void leitura(ArrayList<Pagenation> memoriaVirtual, int i) throws InterruptedException {
-
         endereco = comandos.get(i - 1);
         Pagenation p = memoriaVirtual.get(Integer.valueOf(endereco));
         //Se o atributo "Blocked" for falso, preosseguir com o método
-        if (memoriaVirtual.get(Integer.valueOf(endereco)).getBlocked()) {
+        if (!memoriaVirtual.get(Integer.valueOf(endereco)).getBlocked()) {
 
         //Se a página não estiver preenchida, dizer que ela está vazia e pular
-            if ((p.getModified())) {
+            if ((!p.getModified())) {
             memoriaVirtual.get(Integer.valueOf(endereco)).setBlocked(true);
             memoriaVirtual.get(Integer.valueOf(endereco)).setReferenced(true);
             System.out.println(Thread.currentThread().getName()+" LENDO O ENDERECO " + endereco);
@@ -128,7 +131,6 @@ public class MMU {
         }}
         //Se estiver bloqueada, alertar e prosseguir para o próximo
         else{
-            memoriaVirtual.get(Integer.valueOf(endereco)).setBlocked(true);
             System.out.println(Thread.currentThread().getName()+" pulou " + "O ENDERECO " + endereco);
             return;
         }
@@ -149,7 +151,6 @@ public class MMU {
                 memoriaVirtual.get(Integer.valueOf(endereco)).setReferenced(true);
                 memoriaVirtual.get(Integer.valueOf(endereco)).setModified(true);
                 memoriaVirtual.get(Integer.valueOf(endereco)).setPresent(true);
-                memoriaVirtual.get(Integer.valueOf(endereco)).setPresent(true);
                 System.out.println("Página escrita");
             }
 
@@ -164,7 +165,6 @@ public class MMU {
                 memoriaVirtual.get(Integer.valueOf(endereco)).setReferenced(true);
                 memoriaVirtual.get(Integer.valueOf(endereco)).setModified(true);
                 System.out.println("Página atualizada");
-                sleep((long)(Math.random() * 500));
             }
         }
         //Se estiver bloqueada, alertar e prosseguir para o próximo
@@ -172,12 +172,12 @@ public class MMU {
             System.out.println(Thread.currentThread().getName() + " pulou " + "O ENDERECO " + endereco);
             return;
         }
-        sleep(100);
+        sleep(20);
     }
 
     //Método para manipular a memória virtual escrevendo e lendo os valores em suas respectivas páginas
     public void Manager_Memory(ArrayList<Pagenation> memoriaVirtual) throws InterruptedException, IOException {
-        System.out.println(SUA_ENTRADA);
+        System.out.println(SUA_ENTRADA); // PRINTA AS ENTRADAS DA FABRICA DE ENTRADAS
         for (int i = 0; i< comandos.size(); i++) {
             //rodar contador na página virtual para identificar por quanto tempo ela ficou ativa
             for (Pagenation pag : memoriaVirtual) {
@@ -190,9 +190,6 @@ public class MMU {
                     }
                 }
             }
-
-
-
             //Se a operação for de leitura, rodar o método para escrever na página virtual
             if (comandos.get(i).contains("R")) {
                 leitura(memoriaVirtual, i);

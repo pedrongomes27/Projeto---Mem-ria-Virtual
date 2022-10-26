@@ -12,9 +12,6 @@ public class HD_Mem {
         this.memory_HD = new Integer[storage];
     }
 
-    
-    
-    
     public Integer getMemory_HD(int index) {    // Retornar o valor do index especificado
         return this.memory_HD[index];
     }

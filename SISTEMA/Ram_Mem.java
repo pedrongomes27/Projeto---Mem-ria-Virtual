@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class Ram_Mem {
 
     private ArrayList<Pagenation> memory_RAM;
+    private int valor;
     private int storage = -1;
 
     public Ram_Mem(int storage){

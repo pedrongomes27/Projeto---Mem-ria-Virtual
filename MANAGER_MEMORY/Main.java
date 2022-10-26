@@ -1,5 +1,6 @@
 package MANAGER_MEMORY;
 
+import SISTEMA.HD_Mem;
 import SISTEMA.Pagenation;
 
 import java.util.ArrayList;
@@ -15,14 +16,18 @@ public class Main {
         int storage_Virtual = 10;
         //Definição de quantidade de threads
         int threads = 3;
-        //Instancia do buffer
+        //Instancia do MMU
         MMU mmu = new MMU();
+        //Inicialização do HD
+        HD_Mem HD = new HD_Mem();
         //Inicialização da memória virtual
-        ArrayList<Pagenation> memoria = mmu.iniciarMemoriaVirtual(storage_Virtual);
+        ArrayList<Pagenation> memoriav = mmu.iniciarMemoriaVirtual(storage_Virtual);
+        //Inicialização da memória física
+        ArrayList<String> memoriaF = mmu.iniciarMemoriaFisica(storage_Virtual);
 //        CyclicBarrier barrier = new CyclicBarrier(3);
         //Criação das Threads
         for(int i = 0; i < threads; i++){
-            new Processo(mmu, memoria).start();
+            new Processo(mmu, memoriav).start();
         }
     }
 }

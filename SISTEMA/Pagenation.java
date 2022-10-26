@@ -4,9 +4,9 @@ import java.lang.constant.Constable;
 
 public class Pagenation {
 
-    private Boolean referenced; //REFERENCIADO
+    private Boolean referenced; //REFERENCIADO, IDENTIFICA SE A PAGINA VIRTUAL FOI REFERENCIADA
     private Integer reference;
-    private Boolean modified;   //MODIFICADO
+    private Boolean modified;   //MODIFICADO, IDENTIFICA SE A PAGINA VIRTUAL FOI MODIFICADA
     private Boolean present;    //PRESENTE/AUSENTE
     private Integer Virtual_Page;   //ENDEREÇO DA MEMORIA
     private Integer value;    //VALOR
