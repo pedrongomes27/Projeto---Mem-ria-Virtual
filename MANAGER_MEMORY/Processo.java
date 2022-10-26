@@ -26,9 +26,6 @@ public class Processo extends Thread{
     //Transformando a lista String[] srtSplit em arraylist para facilitar o manuseio dos indices
     private ArrayList<String> comandos = new ArrayList<String>(Arrays.asList(strSplit));
 
-    private Instant start = Instant.now();
-    private Instant end = Instant.now();
-    private Duration timeElapsed = Duration.between(start, end);
 
     //Construtor
     public Processo(MMU m, ArrayList<Pagenation> memoriaVirtual, ArrayList<String> memoriaFisica, ArrayList<String> HDsaida, ArrayList<HD_Mem> HD) {
@@ -45,7 +42,7 @@ public class Processo extends Thread{
             //Para realizar um multi processamento
             synchronized(this) {
                 for (int i = 1; i< comandos.size()-1; i++) {
-                    Instant start = Instant.now();
+                    Instant start = Instant.now(); // inicio do timer
                     int endereco = i - 1;
                     int valor = i + 1;
 
@@ -57,15 +54,14 @@ public class Processo extends Thread{
                     if (comandos.get(i).equals("W")) {
                         MMU.escrita(memoria.get(Integer.parseInt(comandos.get(endereco))), comandos.get(endereco), comandos.get(valor)); // 3 - W - 56
                         MMU.inserirFisica(String.valueOf(valor), memoriaFisica);
-                        HD.set(endereco, HD.get(Integer.parseInt(comandos.get(endereco))));
                         //Caso a memória virtual esteja sem página
-                        if (!memoria.get(Integer.parseInt(comandos.get(endereco))).getPresent()){
-                            MMU.inserirHD(String.valueOf(endereco), String.valueOf(valor), HDsaida);
+                        if (!memoria.get(Integer.parseInt(comandos.get(endereco))).verificarFaltaPag(memoria) ){
+                            MMU.inserirHD(String.valueOf(endereco), String.valueOf(valor), HDsaida);//vai inserir o valor dentro do hd 
                             NRU.executarNRU(memoria, endereco);
                         }
                     }
                     Instant end = Instant.now();
-                    //Timer para zerar as páginas virtuais
+                    // fim do timer para zerar as páginas virtuais
                     if(Duration.between(start, end).getSeconds() >= 1){
                         MMU.tirarRerenciado(memoria);
                     }

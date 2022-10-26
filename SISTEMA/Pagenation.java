@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Pagenation {
 
     private Boolean referenced; //REFERENCIADO, IDENTIFICA SE A PAGINA VIRTUAL FOI REFERENCIADA
-    private Integer reference;
     private Boolean modified;   //MODIFICADO, IDENTIFICA SE A PAGINA VIRTUAL FOI MODIFICADA
     private Boolean present;    //PRESENTE/AUSENTE
     private Integer endereco;   //ENDEREÇO DA MEMORIA
@@ -15,7 +14,6 @@ public class Pagenation {
 
     public Pagenation() { //    INICIA TODAS AS PÁGINAS VAZIAS
         this.referenced = false;
-        this.reference = 0;
         this.modified = false;
         this.present = true;
         this.endereco = null;
@@ -25,7 +23,6 @@ public class Pagenation {
     public String toString() { //   PRINT DA PÁGINA VIRTUAL
         return "Página{" +
                 "Referenced='" + referenced +
-                ", reference='" + reference +
                 ", modified='" + modified +
                 ", present='" + present +
                 ", virtual_page='" + endereco +
@@ -49,11 +46,8 @@ public class Pagenation {
     }
 
     public void setReferenced(Boolean referenced) {
-        if (referenced == true) {
-            reference++;
             this.referenced = referenced;
         }
-    }
 
     public Boolean getModified() {
         return modified;
@@ -73,14 +67,6 @@ public class Pagenation {
 
     public Integer getVirtualPage() {
         return endereco;
-    }
-
-    public Integer getReference() {
-        return reference;
-    }
-
-    public void setReference(Integer reference) {
-        this.reference = reference;
     }
 
     public Integer getEndereco() {

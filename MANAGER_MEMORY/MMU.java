@@ -46,16 +46,6 @@ public class MMU {
             }
         }
     }
-
-//    public void inserirVirtual(ArrayList<Pagenation> memoriaVirtual, ArrayList<String> memoriaFisica, String endereco){
-//        for(int i = 0; i < memoriaFisica.size();i++) {
-//            if(memoriaFisica.get(i).equals(null)){
-//                memoriaVirtual.get(i).setEndereco(Integer.valueOf(memoriaFisica.get(i)));
-//            }
-//        }
-//    }
-
-
     // método para limpar bit de referenciado da página virtual//
     public void tirarRerenciado(ArrayList<Pagenation> memoriaVirtual){
         for(Pagenation pagina : memoriaVirtual){
