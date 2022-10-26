@@ -1,6 +1,6 @@
 package SISTEMA;
 
-import java.lang.constant.Constable;
+import java.util.ArrayList;
 
 public class Pagenation {
 
@@ -8,18 +8,8 @@ public class Pagenation {
     private Integer reference;
     private Boolean modified;   //MODIFICADO, IDENTIFICA SE A PAGINA VIRTUAL FOI MODIFICADA
     private Boolean present;    //PRESENTE/AUSENTE
-    private Integer Virtual_Page;   //ENDEREÇO DA MEMORIA
-    private Integer value;    //VALOR
-
-    public Integer getTimer() {
-        return timer;
-    }
-
-    public void setTimer(Integer timer) {
-        this.timer = timer;
-    }
-
-    private Integer timer;
+    private Integer endereco;   //ENDEREÇO DA MEMORIA
+    
 
     private Boolean blocked;
 
@@ -27,21 +17,10 @@ public class Pagenation {
         this.referenced = false;
         this.reference = 0;
         this.modified = false;
-        this.present = false;
-        this.Virtual_Page = null;
+        this.present = true;
+        this.endereco = null;
         this.blocked = false;
-        this.timer = 0;
     }
-
-//    public Pagenation(Integer Virtual_Page) {
-//        this.referenced = false;
-//        this.reference = 0;
-//        this.modified = false;
-//        this.present = false;
-//        this.Virtual_Page = null;
-//        this.blocked = false;
-//        this.timer = 0;
-//    }
 
     public String toString() { //   PRINT DA PÁGINA VIRTUAL
         return "Página{" +
@@ -49,11 +28,20 @@ public class Pagenation {
                 ", reference='" + reference +
                 ", modified='" + modified +
                 ", present='" + present +
-                ", virtual_page='" + Virtual_Page +
-                ", value='" + value +
-                ", blocked='" + blocked +
-                ", timer='" + timer +
+                ", virtual_page='" + endereco +
                 '}';
+    }
+
+    public Boolean verificarFaltaPag(ArrayList<Pagenation> memoriaVirtual){
+        int counter = 0;
+        for(Pagenation pagina : memoriaVirtual){
+            if(pagina.getModified()){
+                counter += 1;
+            }
+        }
+        if(counter == memoriaVirtual.size()){
+            return true;
+        }else{return false;}
     }
 
     public Boolean getReferenced() {
@@ -84,15 +72,7 @@ public class Pagenation {
     }
 
     public Integer getVirtualPage() {
-        return Virtual_Page;
-    }
-
-    public Integer getValue() {
-        return value;
-    }
-
-    public void setValue(Integer value) {
-        this.value = value;
+        return endereco;
     }
 
     public Integer getReference() {
@@ -103,8 +83,12 @@ public class Pagenation {
         this.reference = reference;
     }
 
-    public void setVirtual_Page(Integer Virtual_Page) {
-        this.Virtual_Page = Virtual_Page;
+    public Integer getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(Integer endereco) {
+        this.endereco = endereco;
     }
 
     public Boolean getBlocked() {

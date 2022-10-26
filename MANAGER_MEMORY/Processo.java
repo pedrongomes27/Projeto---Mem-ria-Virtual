@@ -1,78 +1,79 @@
+// PROCESSO SÃO AS THREADS
 package MANAGER_MEMORY;
 
+import SISTEMA.HD_Mem;
 import SISTEMA.Pagenation;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.concurrent.CyclicBarrier;
+import java.util.Arrays;
 
 public class Processo extends Thread{
-    private final CyclicBarrier barrier;
-    private ArrayList<String> comandos;
+    private ArrayList<String> HDsaida;
+    private ArrayList<HD_Mem> HD;
+    private ArrayList<String> memoriaFisica;
     private MMU MMU;
     private ArrayList<Pagenation> memoria;
+    private NRU NRU;
+
+    private int storage_Virtual = 10;
+
+    private String SUA_ENTRADA = new EntryFactory(storage_Virtual).getNewEntrada();
+    //Dando split para retirar o hífen e a vírgula
+    private String[] strSplit = SUA_ENTRADA.split("[-,]");
+    //Transformando a lista String[] srtSplit em arraylist para facilitar o manuseio dos indices
+    private ArrayList<String> comandos = new ArrayList<String>(Arrays.asList(strSplit));
+
+    private Instant start = Instant.now();
+    private Instant end = Instant.now();
+    private Duration timeElapsed = Duration.between(start, end);
 
     //Construtor
-    public Processo(MMU m, ArrayList<Pagenation> memoria, ArrayList<String> comandos, CyclicBarrier barrier) {
+    public Processo(MMU m, ArrayList<Pagenation> memoriaVirtual, ArrayList<String> memoriaFisica, ArrayList<String> HDsaida, ArrayList<HD_Mem> HD) {
         this.MMU = m;
-        this.memoria = memoria;
-        this.comandos = comandos;
-        this.barrier = barrier;
+        this.memoria = memoriaVirtual;
+        this.NRU = new NRU();
+        this.memoriaFisica = memoriaFisica;
+        this.HDsaida = HDsaida;
+        this.HD = HD;
     }
-
-//    public void await(CyclicBarrier Barrier) {
-//        try {
-//            Barrier.await();
-//        } catch (Exception e) {
-//        }
-//    }
-
 
     public void run(){
         try{
             //Para realizar um multi processamento
             synchronized(this) {
-                //Chamada do gerenciador de memória
-//                MMU.Manager_Memory(memoria);
                 for (int i = 1; i< comandos.size()-1; i++) {
+                    Instant start = Instant.now();
                     int endereco = i - 1;
                     int valor = i + 1;
-                    //rodar contador na página virtual para identificar por quanto tempo ela ficou ativa
-//                        MMU.Manager_Memory(memoria.get(Integer.parseInt(comandos.get(i - 1))), i, comandos.get(i), comandos.get(i - 1), comandos.get(i + 1));
-//
-//                        memoria.get(i-1).setTimer(memoria.get(i-1).getTimer() + 1);
 
                     //Se a operação for de leitura, rodar o método para escrever na página virtual
                     if (comandos.get(i).equals("R")) {
-                        if (memoria.get(Integer.parseInt(comandos.get(endereco))).getReferenced()) {
-                            memoria.get(Integer.parseInt(comandos.get(endereco))).setTimer(memoria.get(Integer.parseInt(comandos.get(i - 1))).getTimer() + 1);
-                            if (memoria.get(Integer.parseInt(comandos.get(endereco))).getTimer() >= 20) {
-                                memoria.get(Integer.parseInt(comandos.get(endereco))).setBlocked(false);
-                                memoria.get(Integer.parseInt(comandos.get(endereco))).setReferenced(false);
-                                memoria.get(Integer.parseInt(comandos.get(endereco))).setTimer(0);
-                            }
-                        }
-                        MMU.leitura(memoria.get(Integer.parseInt(comandos.get(endereco))), i, comandos.get(i), comandos.get(endereco)); // 5 - R
-
+                        MMU.leitura(memoria.get(Integer.parseInt(comandos.get(endereco))), comandos.get(endereco)); // 5 - R
                     }
-                    //Se a operação for de escrita, rodar o método para escrever na página virtual
-                    else if (comandos.get(i).equals("W")) {
-                        if (memoria.get(Integer.parseInt(comandos.get(endereco))).getReferenced()) {
-                            if (memoria.get(Integer.parseInt(comandos.get(endereco))).getTimer() >= 20) {
-                                memoria.get(Integer.parseInt(comandos.get(endereco))).setBlocked(false);
-                                memoria.get(Integer.parseInt(comandos.get(endereco))).setReferenced(false);
-                                memoria.get(Integer.parseInt(comandos.get(endereco))).setTimer(0);
-                            }
+                    //Se a operação for de escrita, rodar o método para ler na página virtual
+                    if (comandos.get(i).equals("W")) {
+                        MMU.escrita(memoria.get(Integer.parseInt(comandos.get(endereco))), comandos.get(endereco), comandos.get(valor)); // 3 - W - 56
+                        MMU.inserirFisica(String.valueOf(valor), memoriaFisica);
+                        HD.set(endereco, HD.get(Integer.parseInt(comandos.get(endereco))));
+                        //Caso a memória virtual esteja sem página
+                        if (!memoria.get(Integer.parseInt(comandos.get(endereco))).getPresent()){
+                            MMU.inserirHD(String.valueOf(endereco), String.valueOf(valor), HDsaida);
+                            NRU.executarNRU(memoria, endereco);
                         }
-                        MMU.escrita(memoria.get(Integer.parseInt(comandos.get(endereco))), i, comandos.get(i), comandos.get(endereco), comandos.get(valor)); // 3 - W - 56
+                    }
+                    Instant end = Instant.now();
+                    //Timer para zerar as páginas virtuais
+                    if(Duration.between(start, end).getSeconds() >= 1){
+                        MMU.tirarRerenciado(memoria);
                     }
                 }
                 System.out.println("Fim da " + Thread.currentThread().getName() + ": ");
                 System.out.println(memoria);
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
